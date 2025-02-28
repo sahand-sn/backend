@@ -25,6 +25,6 @@ const menuSchema = Joi.object({
   location: Joi.string().allow(""),
   contact: Joi.string().allow(""),
   sections: Joi.array().min(1).max(10).items(sectionSchema),
-});
+}).unknown(true);
 
 module.exports = { itemSchema, sectionSchema, menuSchema };

@@ -77,6 +77,7 @@ router.get("/:id", async (req, res) => {
         },
       },
     });
+
     res.json(menu);
   } catch (error) {
     console.error(error);
@@ -101,10 +102,10 @@ router.put("/:id", upload.any(), validateBody(menuSchema), async (req, res) => {
         ...menuData,
         sections: {
           deleteMany: {},
-          create: sections.map((section) => ({
+          create: sections?.map((section) => ({
             ...section,
             items: {
-              create: section.items.map((item) => ({
+              create: section?.items?.map((item) => ({
                 ...item,
                 image: item.image
                   ? Buffer.from(item.image.data).toString("base64")
@@ -125,7 +126,8 @@ router.put("/:id", upload.any(), validateBody(menuSchema), async (req, res) => {
 
     res.json({ menu: updatedMenu, message: "Menu updated successfully!" });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    console.error(error);
+    res.status(500).json({ error: "Could not update menu" });
   }
 });
 
