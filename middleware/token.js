@@ -1,10 +1,10 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 
-export const verifyToken = (req, res, next) => {
+const verifyToken = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ message: "No token provided" });
+    return res.status(401).json({ error: "No token provided" });
   }
 
   try {
@@ -12,6 +12,8 @@ export const verifyToken = (req, res, next) => {
     req.user = { id: decoded.userId };
     next();
   } catch (error) {
-    return res.status(401).json({ message: "Invalid token" });
+    return res.status(401).json({ error: "Invalid token" });
   }
 };
+
+module.exports = { verifyToken };
