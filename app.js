@@ -8,6 +8,7 @@ const cors = require("cors");
 
 const pingRouter = require("./routes/ping");
 const tokenRoutes = require("./routes/token");
+const userRoutes = require("./routes/user");
 const menuRoutes = require("./routes/menu");
 const { verifyToken } = require("./middleware/token");
 
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", pingRouter);
 app.use("/token", tokenRoutes);
 app.use("/menus", verifyToken, menuRoutes);
+app.use("/user", verifyToken, userRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
