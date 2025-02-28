@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", pingRouter);
 app.use("/token", tokenRoutes);
-app.use("/menus", verifyToken, menuRoutes);
+app.use("/menu", verifyToken, menuRoutes);
 app.use("/user", verifyToken, userRoutes);
 
 // catch 404 and forward to error handler
