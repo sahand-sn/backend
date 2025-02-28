@@ -38,7 +38,7 @@ router.post("/", validateBody(menuSchema), async (req, res) => {
       },
     });
 
-    res.json(menu);
+    res.json({ message: "Menu created successfully!", id: menu.id });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
@@ -62,7 +62,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.put("/:id", validateBody(menuSchema),async (req, res) => {
+router.put("/:id", validateBody(menuSchema), async (req, res) => {
   try {
     const menuId = req.params.id;
     const { sections, ...menuData } = req.body;
