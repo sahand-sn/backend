@@ -5,19 +5,18 @@ export const menuSchema = Joi.object({
   description: Joi.string().allow(""),
   location: Joi.string().allow(""),
   contact: Joi.string().allow(""),
+  sections: Joi.array().min(1).max(10).items(sectionSchema),
 });
 
 export const sectionSchema = Joi.object({
   name: Joi.string().required(),
-  order: Joi.number().integer().min(0),
-  menuId: Joi.string().required(),
+  items: Joi.array().min(1).max(20).items(itemSchema),
 });
 
-// schemas/index.js
 export const itemSchema = Joi.object({
   name: Joi.string().required(),
   description: Joi.string().allow(""),
-  ingredients: Joi.array().items(Joi.string()).required(),
+  ingredients: Joi.array().min(1).max(10).items(Joi.string()).required(),
   image: Joi.object({
     mimetype: Joi.string()
       .valid("image/jpeg", "image/png", "image/webp")
@@ -26,5 +25,4 @@ export const itemSchema = Joi.object({
   })
     .unknown()
     .optional(),
-  sectionId: Joi.string().required(),
 });

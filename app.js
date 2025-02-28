@@ -7,9 +7,9 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 
 const pingRouter = require("./routes/ping");
-const authRoutes = require("./routes/auth");
-const resumeRoutes = require("./routes/resume");
-const { authenticate } = require("./middleware/auth");
+const tokenRoutes = require("./routes/token");
+const menuRoutes = require("./routes/menu");
+const { verifyToken } = require("./middleware/token");
 
 dotenv.config();
 const app = express();
@@ -26,8 +26,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", pingRouter);
-app.use("/auth", authRoutes);
-app.use("/resumes", authenticate, resumeRoutes);
+app.use("/token", tokenRoutes);
+app.use("/menus", verifyToken, menuRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
