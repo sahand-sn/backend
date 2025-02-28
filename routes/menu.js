@@ -1,27 +1,29 @@
 const express = require("express");
 const prisma = require("../prisma");
+const multer = require("multer");
 
-const { itemSchema, menuSchema, sectionSchema } = require("../schemas/menu");
+const { menuSchema } = require("../schemas/menu");
 const { validateBody } = require("../middleware/schema");
 
 const router = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
-router.post("/", validateBody(menuSchema), async (req, res) => {
+router.post("/", upload.any(), validateBody(menuSchema), async (req, res) => {
   try {
     const { sections, ...menuData } = req.body;
 
     const menu = await prisma.menu.create({
       data: {
         ...menuData,
-        userId: req.userId,
+        userId: req.user.id,
         sections: {
-          create: sections.map((section) => ({
+          create: sections?.map((section) => ({
             ...section,
             items: {
-              create: section.items.map((item) => ({
+              create: section?.items?.map((item) => ({
                 ...item,
                 // Convert image object to base64 string if provided
-                image: item.image
+                image: item?.image
                   ? Buffer.from(item.image.data).toString("base64")
                   : null,
               })),
@@ -40,7 +42,8 @@ router.post("/", validateBody(menuSchema), async (req, res) => {
 
     res.json({ message: "Menu created successfully!", id: menu.id });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    console.error(error);
+    res.status(500).json({ error: "Could not add new menu" });
   }
 });
 

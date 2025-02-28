@@ -35,7 +35,7 @@ router.post("/signup", validateBody(userSchema), async (req, res) => {
 
     res.json({ token });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "User was not matched" });
   }
 });
 
@@ -59,7 +59,7 @@ router.post("/login", validateBody(userSchema), async (req, res) => {
 
     res.json({ token });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "User was not matched" });
   }
 });
 
